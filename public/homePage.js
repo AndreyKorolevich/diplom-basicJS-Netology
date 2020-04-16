@@ -79,3 +79,48 @@ money.sendMoneyCallback = data => ApiConnector.transferMoney(data,response => {
        }
     return;
 });
+
+const widget = new FavoritesWidget();
+ApiConnector.getFavorites(response => {
+    try {
+        if(response.success === false) {
+           throw new Error('Data has not get');
+        }
+        widget.clearTable();
+        widget.fillTable(response.data);
+        money.updateUsersList(response.data);
+       } catch (err) {
+           money.setMessage(true,err);
+       }
+    return;
+});
+
+widget.addUserCallback = data => ApiConnector.addUserToFavorites(data,response => {
+    try {
+        if(response.success === false) {
+           throw new Error('User has not added');
+        }
+        money.setMessage(false,'User has added');
+        widget.clearTable();
+        widget.fillTable(response.data);
+        money.updateUsersList(response.data); 
+       } catch (err) {
+           money.setMessage(true,err);
+       }
+    return;
+});
+
+widget.removeUserCallback = data => ApiConnector.removeUserFromFavorites(data,response => {
+    try {
+        if(response.success === false) {
+           throw new Error('User has not removed');
+        }
+        money.setMessage(false,'User has removed');
+        widget.clearTable();
+        widget.fillTable(response.data);
+        money.updateUsersList(response.data); 
+       } catch (err) {
+           money.setMessage(true,err);
+       }
+    return;
+});
