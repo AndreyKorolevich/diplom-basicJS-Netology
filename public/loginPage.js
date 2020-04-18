@@ -2,7 +2,7 @@
 const user = new UserForm();
  user.loginFormCallback = data => ApiConnector.login(data, response => {
      try {
-         if(response.success === false) {
+         if(!response.success) {
             throw new Error(response.data);
          }
          JSON.stringify(response);
@@ -14,7 +14,7 @@ const user = new UserForm();
  });
  user.registerFormCallback = data => ApiConnector.register(data, response => {
     try {
-        if(response.success === false) {
+        if(!response.success) {
            throw new Error(response.data);
         }
         JSON.stringify(response);

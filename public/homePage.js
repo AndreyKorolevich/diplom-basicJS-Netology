@@ -2,7 +2,7 @@
 const logButton = new LogoutButton ();
 logButton.action = () => ApiConnector.logout(response => {
     try {
-        if(response.success === false) {
+        if(!response.success) {
            throw new Error(response.data);
         }
         location.reload();
@@ -14,8 +14,8 @@ logButton.action = () => ApiConnector.logout(response => {
 
 ApiConnector.current(response => {
     try {
-        if(response.success === false) {
-           throw new Error('There is no current user');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         ProfileWidget.showProfile(response.data);
        } catch (err) {
@@ -27,8 +27,8 @@ ApiConnector.current(response => {
 const rate = new RatesBoard();
 const updateRates = () => ApiConnector.getStocks(response => {
     try {
-        if(response.success === false) {
-           throw new Error('Data has not get');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         rate.clearTable();
         rate.fillTable(response.data);
@@ -43,9 +43,10 @@ setInterval(updateRates,60000);
 const money = new MoneyManager();
 money.addMoneyCallback = data => ApiConnector.addMoney(data, response => {
     try {
-        if(response.success === false) {
-           throw new Error('It`s impossible to add mony in your wallet');
+        if(!response.success) {
+           throw new Error(response.data);
         }
+        console.log(response)
         money.setMessage(false,'Money has added to your wallet successfully');
         ProfileWidget.showProfile(response.data);  
        } catch (err) {
@@ -56,8 +57,8 @@ money.addMoneyCallback = data => ApiConnector.addMoney(data, response => {
 
 money.conversionMoneyCallback = data => ApiConnector.convertMoney(data,response => {
     try {
-        if(response.success === false) {
-           throw new Error('It`s impossible to convert this');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         money.setMessage(false,'The conversion was successful');
         ProfileWidget.showProfile(response.data);  
@@ -69,8 +70,8 @@ money.conversionMoneyCallback = data => ApiConnector.convertMoney(data,response 
 
 money.sendMoneyCallback = data => ApiConnector.transferMoney(data,response => {
     try {
-        if(response.success === false) {
-           throw new Error('It`s impossible to transfer money');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         money.setMessage(false,'The transfer was successful');
         ProfileWidget.showProfile(response.data);  
@@ -83,8 +84,8 @@ money.sendMoneyCallback = data => ApiConnector.transferMoney(data,response => {
 const widget = new FavoritesWidget();
 ApiConnector.getFavorites(response => {
     try {
-        if(response.success === false) {
-           throw new Error('Data has not get');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         widget.clearTable();
         widget.fillTable(response.data);
@@ -97,8 +98,8 @@ ApiConnector.getFavorites(response => {
 
 widget.addUserCallback = data => ApiConnector.addUserToFavorites(data,response => {
     try {
-        if(response.success === false) {
-           throw new Error('User has not added');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         money.setMessage(false,'User has added');
         widget.clearTable();
@@ -112,8 +113,8 @@ widget.addUserCallback = data => ApiConnector.addUserToFavorites(data,response =
 
 widget.removeUserCallback = data => ApiConnector.removeUserFromFavorites(data,response => {
     try {
-        if(response.success === false) {
-           throw new Error('User has not removed');
+        if(!response.success) {
+           throw new Error(response.data);
         }
         money.setMessage(false,'User has removed');
         widget.clearTable();
